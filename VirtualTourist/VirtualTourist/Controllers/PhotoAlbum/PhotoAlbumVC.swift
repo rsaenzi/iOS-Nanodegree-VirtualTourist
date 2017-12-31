@@ -42,6 +42,7 @@ class PhotoAlbumVC: UIViewController {
     
     private func fetchFhotos() {
         
+        // To prevent user to interrupt the image content fetching process
         enableControls(false)
         
         RequestGetPhotos.get(location: pinLocation!.coordinate) { [weak self] result in
@@ -62,6 +63,9 @@ class PhotoAlbumVC: UIViewController {
             // Shows the fetched images in the collectionView
             self.collectionAlbum.reloadData()
             self.enableControls(true)
+            
+            // Scrolls to first cell
+            // self.collectionAlbum.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.top, animated: true)
         }
     }
     
@@ -77,6 +81,7 @@ class PhotoAlbumVC: UIViewController {
     
     // MARK: Temporal
     func pointIsPersisted() -> Bool {
+        
         // TODO Here we fill the Model cache
         return false
     }
@@ -107,41 +112,24 @@ extension PhotoAlbumVC: UICollectionViewDataSource {
             
             // Starts downloading the image content
             let photo = Model.shared.getPhoto(at: indexPath.row)
-            fetchContent(from: photo.url, for: cell, at: indexPath.row)
+            Model.shared.fetchContent(from: photo.url, for: cell, at: indexPath.row)
         }
         
         return cell
-    }
-    
-    private func fetchContent(from photoUrl: String, for cell: PhotoAlbumCell, at index: Int) {
-        
-        // In a background queue we fetch the image
-        DispatchQueue.global(qos: .userInitiated).async {
-            
-            // Download the image file
-            guard let imageUrl = URL(string: photoUrl),
-                  let imageData = try? Data(contentsOf: imageUrl),
-                  let imageContent = UIImage(data: imageData) else {
-                return
-            }
-            
-            // Saves the image file in the model
-            Model.shared.set(photoContent: imageContent, at: index)
-            
-            // When the download completes, we load the image in the main queue
-            DispatchQueue.main.async {
-                cell.imagePhoto.image = imageContent
-                cell.loadingIndicator.isHidden = true
-                cell.loadingIndicator.stopAnimating()
-            }
-        }
     }
 }
 
 extension PhotoAlbumVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Photo Selected")
+        
+        // Deletes the image from the model
+        Model.shared.deletePhoto(at: indexPath.row)
+        
+        // Deletes the image from the collection view
+        collectionView.deleteItems(at: [indexPath])
+        
+        // TODO Deletes the image from Core Data
     }
 }
 

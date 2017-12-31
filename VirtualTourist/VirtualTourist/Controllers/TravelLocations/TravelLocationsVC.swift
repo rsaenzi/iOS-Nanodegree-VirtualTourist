@@ -40,6 +40,8 @@ class TravelLocationsVC: UIViewController {
             let newPin = MKPointAnnotation()
             newPin.coordinate = coords
             map.addAnnotation(newPin)
+            
+            // TODO Save the pin on Core Data
         }
     }
 }

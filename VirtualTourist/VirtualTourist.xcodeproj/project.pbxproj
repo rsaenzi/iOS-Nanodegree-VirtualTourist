@@ -131,9 +131,9 @@
 		B196B73B1FF87ED200F12012 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B1C5CAB81FF97EDC00FE3327 /* Model.swift */,
 				B18B984B1FF8BCE40056A161 /* Photo.swift */,
 				B18B98421FF8B57B0056A161 /* ResponseGetPhotos.swift */,
-				B1C5CAB81FF97EDC00FE3327 /* Model.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
