@@ -16,13 +16,13 @@ struct ResponseGetPhotos: Codable {
 
 struct ResponsePhotosArray: Codable {
     let page: Int
-    let pages: String
+    let pages: Int
     let perpage: Int
     let total: String
-    let photo: [ResponsePhoto]
+    let photo: [Photo]
 }
 
-struct ResponsePhoto: Codable {
+struct Photo: Codable {
     let id: String
     let title: String
     let url: String

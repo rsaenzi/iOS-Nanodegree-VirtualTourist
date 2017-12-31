@@ -13,7 +13,7 @@ typealias CompletionGetPhotos = (_ result: GetSingleStudentResult) -> ()
 // MARK: Request
 class RequestGetPhotos {
     
-    static func get(latitude: Int, longitude: Int, completion: @escaping CompletionGetPhotos) {
+    static func get(latitude: Double, longitude: Double, completion: @escaping CompletionGetPhotos) {
         
         let endpoint = ApiEndpoint.getPhotos(latitude: latitude, longitude: longitude)
         Request.shared.request(endpoint) { result in

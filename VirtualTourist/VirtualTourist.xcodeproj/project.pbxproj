@@ -27,7 +27,7 @@
 
 /* Begin PBXFileReference section */
 		B18B983E1FF89A2E0056A161 /* ApiEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEndpoint.swift; sourceTree = "<group>"; };
-		B18B98421FF8B57B0056A161 /* ResponseGetPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ResponseGetPhotos.swift; path = ../Endpoints/ResponseGetPhotos.swift; sourceTree = "<group>"; };
+		B18B98421FF8B57B0056A161 /* ResponseGetPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseGetPhotos.swift; sourceTree = "<group>"; };
 		B18B98451FF8B7B10056A161 /* flickr.photos.search.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = flickr.photos.search.json; sourceTree = "<group>"; };
 		B18B98471FF8B8780056A161 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		B18B98491FF8B89A0056A161 /* RequestGetPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestGetPhotos.swift; sourceTree = "<group>"; };
@@ -70,7 +70,6 @@
 			children = (
 				B18B98471FF8B8780056A161 /* Request.swift */,
 				B18B98491FF8B89A0056A161 /* RequestGetPhotos.swift */,
-				B18B98421FF8B57B0056A161 /* ResponseGetPhotos.swift */,
 			);
 			path = Request;
 			sourceTree = "<group>";
@@ -128,6 +127,7 @@
 		B196B73B1FF87ED200F12012 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B18B98421FF8B57B0056A161 /* ResponseGetPhotos.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

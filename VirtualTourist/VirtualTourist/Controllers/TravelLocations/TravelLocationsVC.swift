@@ -12,6 +12,12 @@ import MapKit
 class TravelLocationsVC: UIViewController {
     
     @IBOutlet weak var map: MKMapView!
+    
+    override func viewDidLoad() {
+        RequestGetPhotos.get(latitude: 4.713781, longitude: -74.052767) { result in
+            
+        }
+    }
 }
 
 extension TravelLocationsVC: MKMapViewDelegate {

@@ -16,7 +16,7 @@ private let methodName = "flickr.photos.search"
 enum ApiEndpoint {
     
     /// To get photos near to a specific location
-    case getPhotos(latitude: Int, longitude: Int)
+    case getPhotos(latitude: Double, longitude: Double)
 }
 
 // MARK: URL Components
@@ -49,12 +49,12 @@ extension ApiEndpoint {
             
             var queries = [URLQueryItem]()
             queries.append(URLQueryItem(name: "method", value: methodName))
-            queries.append(URLQueryItem(name: "apiKey", value: flickrApiKey))
+            queries.append(URLQueryItem(name: "api_key", value: flickrApiKey))
             queries.append(URLQueryItem(name: "format", value: "json"))
             queries.append(URLQueryItem(name: "extras", value: "url_m"))
             queries.append(URLQueryItem(name: "nojsoncallback", value: "\(1)"))
-            queries.append(URLQueryItem(name: "latitude", value: "\(latitude)"))
-            queries.append(URLQueryItem(name: "longitude", value: "\(longitude)"))
+            queries.append(URLQueryItem(name: "lat", value: "\(latitude)"))
+            queries.append(URLQueryItem(name: "lon", value: "\(longitude)"))
             
             guard queries.count > 0 else {
                 return nil
