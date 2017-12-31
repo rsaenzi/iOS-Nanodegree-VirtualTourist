@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="gIW-hx-cr2">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Photo Album-->
+        <scene sceneID="oqF-86-m2n">
+            <objects>
+                <viewController storyboardIdentifier="PhotoAlbumVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="gIW-hx-cr2" customClass="PhotoAlbumVC" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="18C-89-sQc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EZv-cv-uv7">
+                                <rect key="frame" x="0.0" y="559" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="qH6-dc-m7P"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="tI9-ch-aKN"/>
+                                    <barButtonItem title="Item" id="STS-gc-9lG"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="maY-rS-QHX"/>
+                                </items>
+                            </toolbar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7dw-bs-sLh">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
+                                <subviews>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ECr-go-L0j">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="167.5"/>
+                                    </mapView>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="RFk-Ok-DSc">
+                                        <rect key="frame" x="0.0" y="167.5" width="375" height="391.5"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fcG-ld-fCD">
+                                            <size key="itemSize" width="50" height="50"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="fno-NW-4zA">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </view>
+                                            </collectionViewCell>
+                                        </cells>
+                                    </collectionView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="ECr-go-L0j" firstAttribute="height" secondItem="7dw-bs-sLh" secondAttribute="height" multiplier="0.3" id="CsV-Pf-UlM"/>
+                                    <constraint firstItem="ECr-go-L0j" firstAttribute="top" secondItem="7dw-bs-sLh" secondAttribute="top" id="ExF-V5-gTs"/>
+                                    <constraint firstItem="RFk-Ok-DSc" firstAttribute="leading" secondItem="7dw-bs-sLh" secondAttribute="leading" id="FsT-Gz-gsN"/>
+                                    <constraint firstAttribute="bottom" secondItem="RFk-Ok-DSc" secondAttribute="bottom" id="ICg-pv-8ou"/>
+                                    <constraint firstItem="ECr-go-L0j" firstAttribute="leading" secondItem="7dw-bs-sLh" secondAttribute="leading" id="JKd-NE-7x8"/>
+                                    <constraint firstAttribute="trailing" secondItem="RFk-Ok-DSc" secondAttribute="trailing" id="eQQ-YC-E79"/>
+                                    <constraint firstItem="RFk-Ok-DSc" firstAttribute="top" secondItem="ECr-go-L0j" secondAttribute="bottom" id="eWT-Ue-0bx"/>
+                                    <constraint firstAttribute="trailing" secondItem="ECr-go-L0j" secondAttribute="trailing" id="h6s-N0-dSa"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="EZv-cv-uv7" firstAttribute="leading" secondItem="PpL-jj-d24" secondAttribute="leading" id="2ps-Wg-ZxV"/>
+                            <constraint firstItem="7dw-bs-sLh" firstAttribute="trailing" secondItem="PpL-jj-d24" secondAttribute="trailing" id="KTJ-7x-M4y"/>
+                            <constraint firstItem="7dw-bs-sLh" firstAttribute="top" secondItem="PpL-jj-d24" secondAttribute="top" id="UMX-60-cc6"/>
+                            <constraint firstItem="7dw-bs-sLh" firstAttribute="leading" secondItem="PpL-jj-d24" secondAttribute="leading" id="XKH-eu-KSY"/>
+                            <constraint firstItem="EZv-cv-uv7" firstAttribute="trailing" secondItem="PpL-jj-d24" secondAttribute="trailing" id="ZlD-om-52t"/>
+                            <constraint firstItem="EZv-cv-uv7" firstAttribute="top" secondItem="7dw-bs-sLh" secondAttribute="bottom" id="pzC-FP-g3l"/>
+                            <constraint firstItem="EZv-cv-uv7" firstAttribute="bottom" secondItem="PpL-jj-d24" secondAttribute="bottom" id="wzW-6e-onH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="PpL-jj-d24"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Photo Album" id="RFb-N9-PwF"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Esc-Lc-wvO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="128.80000000000001" y="144.3778110944528"/>
+        </scene>
+    </scenes>
+</document>

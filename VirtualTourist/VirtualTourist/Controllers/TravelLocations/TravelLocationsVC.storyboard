@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nG7-Mh-0TC">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Virtual Turist-->
+        <scene sceneID="PlD-Kq-yXn">
+            <objects>
+                <viewController storyboardIdentifier="TravelLocationsVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rp6-ar-dOH" customClass="TravelLocationsVC" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ORs-6o-zy7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6MT-14-215">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6MT-14-215" firstAttribute="leading" secondItem="8dX-xU-TDN" secondAttribute="leading" id="asY-NU-9vh"/>
+                            <constraint firstItem="6MT-14-215" firstAttribute="top" secondItem="8dX-xU-TDN" secondAttribute="top" id="cYu-SY-1XC"/>
+                            <constraint firstItem="8dX-xU-TDN" firstAttribute="bottom" secondItem="6MT-14-215" secondAttribute="bottom" id="enn-i6-9RW"/>
+                            <constraint firstItem="8dX-xU-TDN" firstAttribute="trailing" secondItem="6MT-14-215" secondAttribute="trailing" id="gni-JA-ZQK"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="8dX-xU-TDN"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Virtual Turist" id="uRd-j1-vkD">
+                        <barButtonItem key="rightBarButtonItem" title="Gallery" id="eaV-EK-gRv">
+                            <connections>
+                                <segue destination="u41-bf-o1K" kind="show" id="cap-W2-YNf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mtp-Z1-Xop" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="100" y="131.78410794602701"/>
+        </scene>
+        <!--PhotoAlbumVC-->
+        <scene sceneID="gGm-3q-Eho">
+            <objects>
+                <viewControllerPlaceholder storyboardName="PhotoAlbumVC" id="u41-bf-o1K" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8gS-hQ-uso" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="710" y="131"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="iKd-LI-Kwe">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZFo-xx-zWM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nG7-Mh-0TC" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2yC-dz-0Ab">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rp6-ar-dOH" kind="relationship" relationship="rootViewController" id="sGf-gf-4ZP"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="-734" y="132"/>
+        </scene>
+    </scenes>
+</document>
