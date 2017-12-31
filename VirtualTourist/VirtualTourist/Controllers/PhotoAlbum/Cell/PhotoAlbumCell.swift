@@ -1,5 +1,5 @@
 //
-//  TravelLocationsVC.swift
+//  PhotoAlbumCell.swift
 //  VirtualTourist
 //
 //  Created by Rigoberto Sáenz Imbacuán on 12/30/17.
@@ -7,12 +7,7 @@
 //
 
 import UIKit
-import MapKit
 
-class TravelLocationsVC: UIViewController {
-    
-}
-
-extension TravelLocationsVC: MKMapViewDelegate {
+class PhotoAlbumCell: UICollectionViewCell {
     
 }

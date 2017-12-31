@@ -11,12 +11,13 @@
 		B196B72E1FF86C6B00F12012 /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B196B72C1FF86C6B00F12012 /* VirtualTourist.xcdatamodeld */; };
 		B196B7301FF86C6B00F12012 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B196B72F1FF86C6B00F12012 /* Assets.xcassets */; };
 		B196B7331FF86C6B00F12012 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B196B7311FF86C6B00F12012 /* LaunchScreen.storyboard */; };
-		B196B73F1FF87F1B00F12012 /* UIViewController+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B73E1FF87F1B00F12012 /* UIViewController+Load.swift */; };
-		B196B7411FF87F3100F12012 /* UITableView+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B7401FF87F3100F12012 /* UITableView+Load.swift */; };
 		B196B7451FF8801400F12012 /* PhotoAlbumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B7441FF8801400F12012 /* PhotoAlbumVC.swift */; };
 		B196B7471FF8801A00F12012 /* PhotoAlbumVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B196B7461FF8801A00F12012 /* PhotoAlbumVC.storyboard */; };
 		B196B7491FF8802400F12012 /* TravelLocationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B7481FF8802400F12012 /* TravelLocationsVC.swift */; };
 		B196B74B1FF8802B00F12012 /* TravelLocationsVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B196B74A1FF8802B00F12012 /* TravelLocationsVC.storyboard */; };
+		B196B74E1FF887A000F12012 /* PhotoAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B74D1FF887A000F12012 /* PhotoAlbumCell.swift */; };
+		B196B7501FF8882900F12012 /* UICollectionView+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B74F1FF8882900F12012 /* UICollectionView+Load.swift */; };
+		B196B7521FF888D100F12012 /* UIViewController+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B7511FF888D100F12012 /* UIViewController+Load.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,12 +27,13 @@
 		B196B72F1FF86C6B00F12012 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B196B7321FF86C6B00F12012 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B196B7341FF86C6B00F12012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B196B73E1FF87F1B00F12012 /* UIViewController+Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Load.swift"; sourceTree = "<group>"; };
-		B196B7401FF87F3100F12012 /* UITableView+Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Load.swift"; sourceTree = "<group>"; };
 		B196B7441FF8801400F12012 /* PhotoAlbumVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumVC.swift; sourceTree = "<group>"; };
 		B196B7461FF8801A00F12012 /* PhotoAlbumVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PhotoAlbumVC.storyboard; sourceTree = "<group>"; };
 		B196B7481FF8802400F12012 /* TravelLocationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelLocationsVC.swift; sourceTree = "<group>"; };
 		B196B74A1FF8802B00F12012 /* TravelLocationsVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TravelLocationsVC.storyboard; sourceTree = "<group>"; };
+		B196B74D1FF887A000F12012 /* PhotoAlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumCell.swift; sourceTree = "<group>"; };
+		B196B74F1FF8882900F12012 /* UICollectionView+Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Load.swift"; sourceTree = "<group>"; };
+		B196B7511FF888D100F12012 /* UIViewController+Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Load.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +105,8 @@
 		B196B73D1FF87EDC00F12012 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				B196B73E1FF87F1B00F12012 /* UIViewController+Load.swift */,
-				B196B7401FF87F3100F12012 /* UITableView+Load.swift */,
+				B196B74F1FF8882900F12012 /* UICollectionView+Load.swift */,
+				B196B7511FF888D100F12012 /* UIViewController+Load.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -121,10 +123,19 @@
 		B196B7431FF87FC600F12012 /* PhotoAlbum */ = {
 			isa = PBXGroup;
 			children = (
+				B196B74C1FF8878F00F12012 /* Cell */,
 				B196B7441FF8801400F12012 /* PhotoAlbumVC.swift */,
 				B196B7461FF8801A00F12012 /* PhotoAlbumVC.storyboard */,
 			);
 			path = PhotoAlbum;
+			sourceTree = "<group>";
+		};
+		B196B74C1FF8878F00F12012 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				B196B74D1FF887A000F12012 /* PhotoAlbumCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -202,10 +213,11 @@
 			files = (
 				B196B7261FF86C6B00F12012 /* AppDelegate.swift in Sources */,
 				B196B7491FF8802400F12012 /* TravelLocationsVC.swift in Sources */,
-				B196B73F1FF87F1B00F12012 /* UIViewController+Load.swift in Sources */,
 				B196B7451FF8801400F12012 /* PhotoAlbumVC.swift in Sources */,
 				B196B72E1FF86C6B00F12012 /* VirtualTourist.xcdatamodeld in Sources */,
-				B196B7411FF87F3100F12012 /* UITableView+Load.swift in Sources */,
+				B196B7501FF8882900F12012 /* UICollectionView+Load.swift in Sources */,
+				B196B7521FF888D100F12012 /* UIViewController+Load.swift in Sources */,
+				B196B74E1FF887A000F12012 /* PhotoAlbumCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,8 +7,27 @@
 //
 
 import UIKit
+import MapKit
 
 class PhotoAlbumVC: UIViewController {
     
 }
 
+extension PhotoAlbumVC: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: PhotoAlbumCell = collectionView.dequeue(indexPath)
+        return cell
+    }
+}
+
+extension PhotoAlbumVC: UICollectionViewDelegate {
+    
+}
+
+extension PhotoAlbumVC: MKMapViewDelegate {
+    
+}

@@ -1,5 +1,5 @@
 //
-//  UITableView+Load.swift
+//  UICollectionView+Load.swift
 //  VirtualTourist
 //
 //  Created by Rigoberto Sáenz Imbacuán on 12/30/17.
@@ -8,18 +8,18 @@
 
 import UIKit
 
-extension UITableView {
+extension UICollectionView {
     
     /**
-     This function works if the UITableViewCell class and the Cell Identifier are the same
+     This function works if the UICollectionViewCell class and the Cell Identifier are the same
      */
-    func dequeue<T: UITableViewCell>(_ indexPath: IndexPath) -> T {
+    func dequeue<T: UICollectionViewCell>(_ indexPath: IndexPath) -> T {
         
         let identifier = className(some: T.self)
-        let rawCell = self.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        let rawCell = self.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
         
         guard let cell = rawCell as? T else {
-            fatalError("UITableViewCell with identifier '\(identifier)' was not found")
+            fatalError("UICollectionViewCell with identifier '\(identifier)' was not found")
         }
         return cell
     }
