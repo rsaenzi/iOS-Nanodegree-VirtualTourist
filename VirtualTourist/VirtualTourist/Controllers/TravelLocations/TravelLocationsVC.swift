@@ -11,7 +11,7 @@ import MapKit
 
 class TravelLocationsVC: UIViewController {
     
-    @IBOutlet weak var map: MKMapView!
+    @IBOutlet private weak var map: MKMapView!
     
     override func viewDidLoad() {
         
@@ -63,6 +63,9 @@ extension TravelLocationsVC: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        // Deselect the pin
+        mapView.deselectAnnotation(view.annotation, animated: false)
         
         // Show the Photo Album, using the select pin coordinate
         let screen: PhotoAlbumVC = loadViewController()

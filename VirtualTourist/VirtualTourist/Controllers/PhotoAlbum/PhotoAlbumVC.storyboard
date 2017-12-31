@@ -67,16 +67,33 @@
                                             <outlet property="delegate" destination="gIW-hx-cr2" id="TwG-V1-GU2"/>
                                         </connections>
                                     </collectionView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PO4-wh-Q93">
+                                        <rect key="frame" x="0.0" y="138" width="320" height="322"/>
+                                        <subviews>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="Adm-cr-vHi">
+                                                <rect key="frame" x="142" y="143" width="37" height="37"/>
+                                            </activityIndicatorView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.003010978457" green="0.70323187109999996" blue="0.89525973800000003" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstItem="Adm-cr-vHi" firstAttribute="centerX" secondItem="PO4-wh-Q93" secondAttribute="centerX" id="8vt-Ce-d6I"/>
+                                            <constraint firstItem="Adm-cr-vHi" firstAttribute="centerY" secondItem="PO4-wh-Q93" secondAttribute="centerY" id="ABM-Gf-Pf8"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="PO4-wh-Q93" secondAttribute="trailing" id="CUy-KR-hob"/>
                                     <constraint firstItem="ECr-go-L0j" firstAttribute="height" secondItem="7dw-bs-sLh" secondAttribute="height" multiplier="0.3" id="CsV-Pf-UlM"/>
                                     <constraint firstItem="ECr-go-L0j" firstAttribute="top" secondItem="7dw-bs-sLh" secondAttribute="top" id="ExF-V5-gTs"/>
                                     <constraint firstItem="RFk-Ok-DSc" firstAttribute="leading" secondItem="7dw-bs-sLh" secondAttribute="leading" id="FsT-Gz-gsN"/>
                                     <constraint firstAttribute="bottom" secondItem="RFk-Ok-DSc" secondAttribute="bottom" id="ICg-pv-8ou"/>
                                     <constraint firstItem="ECr-go-L0j" firstAttribute="leading" secondItem="7dw-bs-sLh" secondAttribute="leading" id="JKd-NE-7x8"/>
+                                    <constraint firstItem="PO4-wh-Q93" firstAttribute="top" secondItem="ECr-go-L0j" secondAttribute="bottom" id="P7Z-ZI-KnB"/>
                                     <constraint firstAttribute="trailing" secondItem="RFk-Ok-DSc" secondAttribute="trailing" id="eQQ-YC-E79"/>
                                     <constraint firstItem="RFk-Ok-DSc" firstAttribute="top" secondItem="ECr-go-L0j" secondAttribute="bottom" id="eWT-Ue-0bx"/>
+                                    <constraint firstItem="PO4-wh-Q93" firstAttribute="leading" secondItem="7dw-bs-sLh" secondAttribute="leading" id="eyk-6B-Tia"/>
+                                    <constraint firstAttribute="bottom" secondItem="PO4-wh-Q93" secondAttribute="bottom" id="goC-7V-mic"/>
                                     <constraint firstAttribute="trailing" secondItem="ECr-go-L0j" secondAttribute="trailing" id="h6s-N0-dSa"/>
                                 </constraints>
                             </view>
@@ -112,9 +129,11 @@
                         <viewLayoutGuide key="safeArea" id="PpL-jj-d24"/>
                     </view>
                     <connections>
+                        <outlet property="buttonClose" destination="PrZ-nC-UWE" id="ucV-tm-M6W"/>
                         <outlet property="collectionAlbum" destination="RFk-Ok-DSc" id="DqW-GV-SUa"/>
                         <outlet property="itemNewAlbum" destination="STS-gc-9lG" id="XZW-Kk-tDg"/>
                         <outlet property="map" destination="ECr-go-L0j" id="Fae-GB-27g"/>
+                        <outlet property="waitingAlert" destination="PO4-wh-Q93" id="rMR-Ox-vlc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Esc-Lc-wvO" userLabel="First Responder" sceneMemberID="firstResponder"/>

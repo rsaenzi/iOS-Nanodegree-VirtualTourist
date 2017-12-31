@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import MapKit
 
 typealias CompletionGetPhotos = (_ result: GetSingleStudentResult) -> ()
 
 // MARK: Request
 class RequestGetPhotos {
     
-    static func get(latitude: Double, longitude: Double, completion: @escaping CompletionGetPhotos) {
+    static func get(location: CLLocationCoordinate2D, completion: @escaping CompletionGetPhotos) {
         
-        let endpoint = ApiEndpoint.getPhotos(latitude: latitude, longitude: longitude)
+        let endpoint = ApiEndpoint.getPhotos(latitude: location.latitude, longitude: location.longitude)
         Request.shared.request(endpoint) { result in
             
             switch result {
