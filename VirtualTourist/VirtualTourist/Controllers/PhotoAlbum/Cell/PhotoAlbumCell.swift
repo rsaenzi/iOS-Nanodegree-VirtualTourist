@@ -9,5 +9,6 @@
 import UIKit
 
 class PhotoAlbumCell: UICollectionViewCell {
-    
+    @IBOutlet weak var imagePhoto: UIImageView!
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
 }

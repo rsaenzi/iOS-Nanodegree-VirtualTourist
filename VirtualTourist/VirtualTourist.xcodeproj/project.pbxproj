@@ -24,6 +24,7 @@
 		B196B74E1FF887A000F12012 /* PhotoAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B74D1FF887A000F12012 /* PhotoAlbumCell.swift */; };
 		B196B7501FF8882900F12012 /* UICollectionView+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B74F1FF8882900F12012 /* UICollectionView+Load.swift */; };
 		B196B7521FF888D100F12012 /* UIViewController+Load.swift in Sources */ = {isa = PBXBuildFile; fileRef = B196B7511FF888D100F12012 /* UIViewController+Load.swift */; };
+		B1C5CAB91FF97EDC00FE3327 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C5CAB81FF97EDC00FE3327 /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		B196B74D1FF887A000F12012 /* PhotoAlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumCell.swift; sourceTree = "<group>"; };
 		B196B74F1FF8882900F12012 /* UICollectionView+Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Load.swift"; sourceTree = "<group>"; };
 		B196B7511FF888D100F12012 /* UIViewController+Load.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Load.swift"; sourceTree = "<group>"; };
+		B1C5CAB81FF97EDC00FE3327 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 			children = (
 				B18B984B1FF8BCE40056A161 /* Photo.swift */,
 				B18B98421FF8B57B0056A161 /* ResponseGetPhotos.swift */,
+				B1C5CAB81FF97EDC00FE3327 /* Model.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				B18B98431FF8B57B0056A161 /* ResponseGetPhotos.swift in Sources */,
 				B196B7451FF8801400F12012 /* PhotoAlbumVC.swift in Sources */,
 				B196B72E1FF86C6B00F12012 /* VirtualTourist.xcdatamodeld in Sources */,
+				B1C5CAB91FF97EDC00FE3327 /* Model.swift in Sources */,
 				B196B7501FF8882900F12012 /* UICollectionView+Load.swift in Sources */,
 				B18B984A1FF8B89A0056A161 /* RequestGetPhotos.swift in Sources */,
 				B196B7521FF888D100F12012 /* UIViewController+Load.swift in Sources */,
