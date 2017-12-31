@@ -14,12 +14,59 @@ class TravelLocationsVC: UIViewController {
     @IBOutlet weak var map: MKMapView!
     
     override func viewDidLoad() {
-        RequestGetPhotos.get(latitude: 4.713781, longitude: -74.052767) { result in
+        
+        // Add the gesture to create map annotations
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(onLongTap(_:)))
+        gesture.numberOfTouchesRequired = 1
+        gesture.numberOfTapsRequired = 0
+        gesture.minimumPressDuration = 0.35
+        map.addGestureRecognizer(gesture)
+    }
+    
+    @IBAction func onTapGallery(_ sender: UIBarButtonItem) {
+        let screen: PhotoAlbumVC = loadViewController()
+        present(screen, animated: true)
+    }
+    
+    @objc func onLongTap(_ sender: UILongPressGestureRecognizer) {
+        
+        // This prevents to call this event twice
+        if sender.state == .began {
             
+            // Gets the coordinates from the long-press recognized gesture
+            let coords = map.convert(sender.location(in: map), toCoordinateFrom: map)
+            
+            // Adds the location to map, to be rendered
+            let newPin = MKPointAnnotation()
+            newPin.coordinate = coords
+            map.addAnnotation(newPin)
         }
     }
 }
 
 extension TravelLocationsVC: MKMapViewDelegate {
     
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        // Shows a Pin on the map, for every single annotation
+        let reuseId = "pin"
+        var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+        
+        if pinView == nil {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            pinView?.pinTintColor = #colorLiteral(red: 0.003010978457, green: 0.7032318711, blue: 0.895259738, alpha: 1)
+            pinView?.animatesDrop = true
+        }
+        
+        pinView?.annotation = annotation
+        return pinView
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        // Show the Photo Album, using the select pin coordinate
+        let screen: PhotoAlbumVC = loadViewController()
+        screen.pinLocation = view.annotation as? MKPointAnnotation
+        present(screen, animated: true)
+    }
 }
