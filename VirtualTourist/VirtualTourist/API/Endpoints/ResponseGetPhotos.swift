@@ -1,5 +1,5 @@
 //
-//  ApiOutput.swift
+//  ResponseGetPhotos.swift
 //  VirtualTourist
 //
 //  Created by Rigoberto Sáenz Imbacuán on 12/31/17.
@@ -8,21 +8,21 @@
 
 import Foundation
 
-// MARK: JSON Request Objects
-struct ApiResponse: Codable {
+// MARK: JSON Response Objects
+struct ResponseGetPhotos: Codable {
     let stat: String
-    let photos: ApiResponsePhotosArray
+    let photos: ResponsePhotosArray
 }
 
-struct ApiResponsePhotosArray: Codable {
+struct ResponsePhotosArray: Codable {
     let page: Int
     let pages: String
     let perpage: Int
     let total: String
-    let photo: [ApiResponsePhoto]
+    let photo: [ResponsePhoto]
 }
 
-struct ApiResponsePhoto: Codable {
+struct ResponsePhoto: Codable {
     let id: String
     let title: String
     let url: String
