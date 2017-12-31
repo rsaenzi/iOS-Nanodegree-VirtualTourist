@@ -41,6 +41,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="map" destination="6MT-14-215" id="u45-Xd-VXI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mtp-Z1-Xop" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -57,7 +60,6 @@
         <!--Navigation Controller-->
         <scene sceneID="iKd-LI-Kwe">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZFo-xx-zWM" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nG7-Mh-0TC" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="2yC-dz-0Ab">
@@ -69,6 +71,7 @@
                         <segue destination="rp6-ar-dOH" kind="relationship" relationship="rootViewController" id="sGf-gf-4ZP"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZFo-xx-zWM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-734" y="132"/>
         </scene>

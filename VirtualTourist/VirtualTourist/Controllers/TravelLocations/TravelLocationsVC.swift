@@ -11,6 +11,7 @@ import MapKit
 
 class TravelLocationsVC: UIViewController {
     
+    @IBOutlet weak var map: MKMapView!
 }
 
 extension TravelLocationsVC: MKMapViewDelegate {

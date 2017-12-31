@@ -91,6 +91,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="Photo Album" id="RFb-N9-PwF"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="collectionAlbum" destination="RFk-Ok-DSc" id="DqW-GV-SUa"/>
+                        <outlet property="itemNewAlbum" destination="STS-gc-9lG" id="XZW-Kk-tDg"/>
+                        <outlet property="map" destination="ECr-go-L0j" id="Fae-GB-27g"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Esc-Lc-wvO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

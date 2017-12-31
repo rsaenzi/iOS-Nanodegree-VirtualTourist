@@ -11,6 +11,9 @@ import MapKit
 
 class PhotoAlbumVC: UIViewController {
     
+    @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var collectionAlbum: UICollectionView!
+    @IBOutlet weak var itemNewAlbum: UIBarButtonItem!
 }
 
 extension PhotoAlbumVC: UICollectionViewDataSource {
