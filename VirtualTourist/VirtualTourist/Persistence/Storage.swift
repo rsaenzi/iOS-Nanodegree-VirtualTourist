@@ -136,7 +136,6 @@ extension Storage {
         do {
             allPins = try context.fetch(fetchRequest)
             
-            // TODO Debug
             for item in allPins {
                 print("getAllPins() latitude:\(item.latitude) longitude:\(item.longitude) photos:\(item.photos?.count)")
             }

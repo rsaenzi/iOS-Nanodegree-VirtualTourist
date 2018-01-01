@@ -55,6 +55,11 @@ class PhotoAlbumVC: UIViewController {
     }
     
     @IBAction func onTapReload(_ sender: UIBarButtonItem) {
+        
+        // TODO Deletes all persistent images for this pin location
+        
+        // TODO Clears the photoCount fot this pin location, to perform a full reset of the model
+        
         fetchPhotosInfoFromFlicker()
     }
     
@@ -180,6 +185,8 @@ extension PhotoAlbumVC: UICollectionViewDelegate {
         collectionView.deleteItems(at: [indexPath])
         
         // TODO Deletes the image from Core Data
+        
+        // TODO Change the photoCount value
     }
 }
 
