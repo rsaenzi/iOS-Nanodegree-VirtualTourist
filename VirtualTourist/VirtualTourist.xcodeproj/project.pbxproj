@@ -27,8 +27,6 @@
 		B1C5CAB91FF97EDC00FE3327 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C5CAB81FF97EDC00FE3327 /* Model.swift */; };
 		B1EBFE3C1FF9B34E00D5D38A /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EBFE3B1FF9B34E00D5D38A /* Storage.swift */; };
 		B1EBFE441FF9B71900D5D38A /* ApiPhotosArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EBFE431FF9B71900D5D38A /* ApiPhotosArray.swift */; };
-		B1EBFE461FF9B78400D5D38A /* StoredPhotoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EBFE451FF9B78400D5D38A /* StoredPhotoModel.swift */; };
-		B1EBFE481FF9B79000D5D38A /* StoredPinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EBFE471FF9B79000D5D38A /* StoredPinModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,8 +52,6 @@
 		B1C5CAB81FF97EDC00FE3327 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		B1EBFE3B1FF9B34E00D5D38A /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		B1EBFE431FF9B71900D5D38A /* ApiPhotosArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiPhotosArray.swift; sourceTree = "<group>"; };
-		B1EBFE451FF9B78400D5D38A /* StoredPhotoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPhotoModel.swift; sourceTree = "<group>"; };
-		B1EBFE471FF9B79000D5D38A /* StoredPinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPinModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,20 +189,10 @@
 		B1EBFE3A1FF9B33700D5D38A /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
-				B1EBFE3D1FF9B3AC00D5D38A /* Models */,
-				B196B72C1FF86C6B00F12012 /* VirtualTourist.xcdatamodeld */,
 				B1EBFE3B1FF9B34E00D5D38A /* Storage.swift */,
+				B196B72C1FF86C6B00F12012 /* VirtualTourist.xcdatamodeld */,
 			);
 			path = Persistence;
-			sourceTree = "<group>";
-		};
-		B1EBFE3D1FF9B3AC00D5D38A /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				B1EBFE471FF9B79000D5D38A /* StoredPinModel.swift */,
-				B1EBFE451FF9B78400D5D38A /* StoredPhotoModel.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		B1EBFE3E1FF9B3B200D5D38A /* Models */ = {
@@ -301,11 +287,9 @@
 				B1EBFE441FF9B71900D5D38A /* ApiPhotosArray.swift in Sources */,
 				B196B7451FF8801400F12012 /* PhotoAlbumVC.swift in Sources */,
 				B196B72E1FF86C6B00F12012 /* VirtualTourist.xcdatamodeld in Sources */,
-				B1EBFE481FF9B79000D5D38A /* StoredPinModel.swift in Sources */,
 				B1C5CAB91FF97EDC00FE3327 /* Model.swift in Sources */,
 				B196B7501FF8882900F12012 /* UICollectionView+Load.swift in Sources */,
 				B18B984A1FF8B89A0056A161 /* RequestGetPhotos.swift in Sources */,
-				B1EBFE461FF9B78400D5D38A /* StoredPhotoModel.swift in Sources */,
 				B196B7521FF888D100F12012 /* UIViewController+Load.swift in Sources */,
 				B18B98481FF8B8780056A161 /* Request.swift in Sources */,
 				B196B74E1FF887A000F12012 /* PhotoAlbumCell.swift in Sources */,
