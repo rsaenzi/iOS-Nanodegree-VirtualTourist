@@ -21,6 +21,26 @@ class TravelLocationsVC: UIViewController {
         gesture.numberOfTapsRequired = 0
         gesture.minimumPressDuration = 0.35
         map.addGestureRecognizer(gesture)
+        
+        // Loads any persisted points
+        let allPins = Storage.shared.getAllPins()
+        if allPins.count > 0 {
+            
+            // Transform the points into a valid MKPointAnnotation objects
+            let persistedAnnotations = allPins.map { pin -> MKPointAnnotation in
+                let point = MKPointAnnotation()
+                
+                point.coordinate = CLLocationCoordinate2D(
+                    latitude: CLLocationDegrees(pin.latitude),
+                    longitude: CLLocationDegrees(pin.longitude))
+                
+                return point
+            }
+            
+            // Add those to the map
+            map.addAnnotations(persistedAnnotations)
+            map.showAnnotations(persistedAnnotations, animated: true)
+        }
     }
     
     @IBAction func onTapGallery(_ sender: UIBarButtonItem) {
@@ -41,7 +61,8 @@ class TravelLocationsVC: UIViewController {
             newPin.coordinate = coords
             map.addAnnotation(newPin)
             
-            // TODO Save the pin on Core Data
+            // Save the pin on Core Data
+            Storage.shared.savePin(latitude: Float(coords.latitude), longitude: Float(coords.longitude))
         }
     }
 }

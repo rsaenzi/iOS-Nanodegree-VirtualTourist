@@ -12,58 +12,72 @@ class Model {
     
     static let shared = Model()
     
-    private var photoGallery = [ApiPhoto]()
-    private var photoGalleryContent = [UIImage?]()
+    // Photo URL (and other info) for selected annotation point
+    private var galleryInfo = [ApiPhoto]()
     
-    func set(gallery: [ApiPhoto]) {
-        photoGallery = gallery
-        photoGalleryContent = [UIImage?](repeating: nil, count: photoGallery.count)
+    // Photo files for selected annotation point
+    private var galleryImages = [UIImage?]()
+    
+    func resetGallery(photoCount: Int) {
+        
+        // Clears any gallery info (fetched from flickr)
+        galleryInfo = []
+        
+        // Inits an array of gallery images. If photoCount is greater that zero
+        // means that a previous request to flickr was made, and some images are stored in Core Data
+        galleryImages = [UIImage?](repeating: nil, count: photoCount)
     }
     
-    func getPhotoCount() -> Int {
-        return photoGallery.count
+    // Load info fetched from flickr
+    func load(galleryInfo: [ApiPhoto]) {
+        self.galleryInfo = galleryInfo
+        
+        // If no previous request to Flickr was made...
+        if galleryImages.count == 0 {
+            galleryImages = [UIImage?](repeating: nil, count: galleryInfo.count)
+        }
+        
+        // TODO validate if galleryInfo.count == galleryImages.info is true
+        // If dont means that the new request gave a different image count
+        if self.galleryInfo.count != galleryImages.count {
+            print("Error: galleryInfo.count is not equal than galleryImages.info!!!!")
+        }
     }
     
-    func getPhoto(at index: Int) -> ApiPhoto {
-        return photoGallery[index]
+    // Load persisted images from Core Data
+    func load(persistedGalleryImages: [StoredPhoto]) {
+        
+        for persistedImage in persistedGalleryImages {
+            
+            guard let imageData = persistedImage.image,
+                  let imageContent = UIImage(data: imageData) else {
+                break
+            }
+            galleryImages[Int(persistedImage.index)] = imageContent
+        }
+    }
+}
+
+extension Model {
+    
+    func getGalleryCount() -> Int {
+        return galleryInfo.count
     }
     
-    func getPhotoContent(at index: Int) -> UIImage? {
-        return photoGalleryContent[index]
+    func getPhotoInfo(from index: Int) -> ApiPhoto {
+        return galleryInfo[index]
+    }
+    
+    func getPhotoImage(from index: Int) -> UIImage? {
+        return galleryImages[index]
+    }
+    
+    func set(photoImage: UIImage, at index: Int) {
+        galleryImages[index] = photoImage
     }
     
     func deletePhoto(at index: Int) {
-        photoGallery.remove(at: index)
-        photoGalleryContent.remove(at: index)
-    }
-    
-    func set(photoContent: UIImage, at index: Int) {
-        photoGalleryContent[index] = photoContent
-    }
-    
-    func fetchContent(from photoUrl: String, for cell: PhotoAlbumCell, at index: Int) {
-        
-        // In a background queue we fetch the image
-        DispatchQueue.global(qos: .userInitiated).async {
-            
-            // Download the image file
-            guard let imageUrl = URL(string: photoUrl),
-                let imageData = try? Data(contentsOf: imageUrl),
-                let imageContent = UIImage(data: imageData) else {
-                    return
-            }
-            
-            // Saves the image file in the model
-            Model.shared.set(photoContent: imageContent, at: index)
-            
-            // TODO Saves the images content to Core Data
-            
-            // When the download completes, we load the image in the main queue
-            DispatchQueue.main.async {
-                cell.imagePhoto.image = imageContent
-                cell.loadingIndicator.isHidden = true
-                cell.loadingIndicator.stopAnimating()
-            }
-        }
+        galleryInfo.remove(at: index)
+        galleryImages.remove(at: index)
     }
 }

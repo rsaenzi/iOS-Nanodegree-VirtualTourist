@@ -26,40 +26,39 @@ class PhotoAlbumVC: UIViewController {
         map.addAnnotation(pinLocation!)
         map.showAnnotations([pinLocation!], animated: false)
         
-        if pointIsPersisted() {
+        // Ask core data if we have a photo count associated to this pin,
+        // which means that this pin was tapped previously
+        if let count = Storage.shared.getPhotoCount(
+            latitude: Float(pinLocation!.coordinate.latitude),
+            longitude: Float(pinLocation!.coordinate.longitude)), count > 0 {
             
-            // TODO Get the saved photos from Core Data
-            Model.shared.set(gallery: [])
+            // Previous fetch, possible persisted images
+            Model.shared.resetGallery(photoCount: count)
+            
+            // Fetch any saved photos from Core Data
+            let persistedPhotos = Storage.shared.getPhotos(
+                latitude: Float(pinLocation!.coordinate.latitude),
+                longitude: Float(pinLocation!.coordinate.longitude))
+            
+            // Load the persisted images into the model
+            Model.shared.load(persistedGalleryImages: persistedPhotos)
             collectionAlbum.reloadData()
-            enableControls(true)
-            
+
         } else {
             
-            // Start a request to get photos from Flickr
-            fetchFhotos()
+            // This is the first time we ask Flickr photos for this pinLocation
+            Model.shared.resetGallery(photoCount: 0)
         }
         
-        // TODO: Test!!!
-        Storage.shared.getAllPins()
-        
-        Storage.shared.savePin(latitude: 20, longitude: 40)
-        Storage.shared.getPin(latitude: 20, longitude: 40)
-        
-        Storage.shared.savePin(latitude: 3.1415, longitude: 0.12345)
-        Storage.shared.getPin(latitude: 3.1415, longitude: 0.12345)
-        
-        Storage.shared.save(photo: #imageLiteral(resourceName: "Android"), index: 50, latitude: 3.1415, longitude: 0.12345)
-        Storage.shared.getPhotos(latitude: 3.1415, longitude: 0.12345)
-        
-        Storage.shared.getAllPins()
-        // TODO: Test!!!
+        // Start a request to get photos info from Flickr
+        fetchPhotosInfoFromFlicker()
     }
     
     @IBAction func onTapReload(_ sender: UIBarButtonItem) {
-        fetchFhotos()
+        fetchPhotosInfoFromFlicker()
     }
     
-    private func fetchFhotos() {
+    private func fetchPhotosInfoFromFlicker() {
         
         // To prevent user to interrupt the image content fetching process
         enableControls(false)
@@ -68,23 +67,28 @@ class PhotoAlbumVC: UIViewController {
         collectionAlbum.setContentOffset(.zero, animated: true)
         
         RequestGetPhotos.get(location: pinLocation!.coordinate) { [weak self] result in
-            
-            guard let `self` = self else {
-                return
-            }
+            guard let `self` = self else { return }
             
             switch result {
                 
             case .success(let studentResults):
-                Model.shared.set(gallery: studentResults.photos.photo)
+                
+                // Save the photo count for this pin location
+                Storage.shared.setPhotoCount(
+                    latitude: Float(self.pinLocation!.coordinate.latitude),
+                    longitude: Float(self.pinLocation!.coordinate.longitude),
+                    photoCount: studentResults.photos.photo.count)
+                
+                // Save the photo info array into the model
+                Model.shared.load(galleryInfo: studentResults.photos.photo)
+                
+                // Shows the fetched images in the collectionView
+                self.collectionAlbum.reloadData()
+                self.enableControls(true)
                 
             default:
-                Model.shared.set(gallery: [])
+                break
             }
-            
-            // Shows the fetched images in the collectionView
-            self.collectionAlbum.reloadData()
-            self.enableControls(true)
         }
     }
     
@@ -97,19 +101,12 @@ class PhotoAlbumVC: UIViewController {
     @IBAction func onTapClose(_ sender: UIBarButtonItem) {
         dismiss(animated: true)
     }
-    
-    // MARK: Temporal
-    func pointIsPersisted() -> Bool {
-        
-        // TODO Here we fill the Model cache
-        return false
-    }
 }
 
 extension PhotoAlbumVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Model.shared.getPhotoCount()
+        return Model.shared.getGalleryCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -118,7 +115,7 @@ extension PhotoAlbumVC: UICollectionViewDataSource {
         let cell: PhotoAlbumCell = collectionView.dequeue(indexPath)
         
         // If the image was previously downloaded or fetched from Core Data...
-        if let imageContent = Model.shared.getPhotoContent(at: indexPath.row) {
+        if let imageContent = Model.shared.getPhotoImage(from: indexPath.row) {
             cell.imagePhoto.image = imageContent
             cell.loadingIndicator.isHidden = true
             cell.loadingIndicator.stopAnimating()
@@ -130,11 +127,45 @@ extension PhotoAlbumVC: UICollectionViewDataSource {
             cell.loadingIndicator.startAnimating()
             
             // Starts downloading the image content
-            let photo = Model.shared.getPhoto(at: indexPath.row)
-            Model.shared.fetchContent(from: photo.url, for: cell, at: indexPath.row)
+            let photoInfo = Model.shared.getPhotoInfo(from: indexPath.row)
+            fetchImage(from: photoInfo, for: cell, at: indexPath.row)
         }
         
         return cell
+    }
+}
+
+extension PhotoAlbumVC {
+    
+    private func fetchImage(from photoInfo: ApiPhoto, for cell: PhotoAlbumCell, at index: Int) {
+        
+        // In a background queue we fetch the image
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let `self` = self else { return }
+            
+            // Download the image file
+            guard let imageUrl = URL(string: photoInfo.url),
+                  let imageData = try? Data(contentsOf: imageUrl),
+                  let imageContent = UIImage(data: imageData) else {
+                return
+            }
+            
+            // Saves the image file in the model
+            Model.shared.set(photoImage: imageContent, at: index)
+            
+            // When the download completes, we load the image in the main queue
+            DispatchQueue.main.async {
+                
+                // Saves the images content to Core Data
+                Storage.shared.save(photo: imageContent, index: index,
+                                    latitude: Float(self.pinLocation!.coordinate.latitude),
+                                    longitude: Float(self.pinLocation!.coordinate.longitude))
+                
+                cell.imagePhoto.image = imageContent
+                cell.loadingIndicator.isHidden = true
+                cell.loadingIndicator.stopAnimating()
+            }
+        }
     }
 }
 
