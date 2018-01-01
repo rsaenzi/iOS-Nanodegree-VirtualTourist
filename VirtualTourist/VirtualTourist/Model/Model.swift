@@ -12,10 +12,10 @@ class Model {
     
     static let shared = Model()
     
-    private var photoGallery = [Photo]()
+    private var photoGallery = [ApiPhoto]()
     private var photoGalleryContent = [UIImage?]()
     
-    func set(gallery: [Photo]) {
+    func set(gallery: [ApiPhoto]) {
         photoGallery = gallery
         photoGalleryContent = [UIImage?](repeating: nil, count: photoGallery.count)
     }
@@ -24,7 +24,7 @@ class Model {
         return photoGallery.count
     }
     
-    func getPhoto(at index: Int) -> Photo {
+    func getPhoto(at index: Int) -> ApiPhoto {
         return photoGallery[index]
     }
     

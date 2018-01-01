@@ -27,13 +27,29 @@ class PhotoAlbumVC: UIViewController {
         map.showAnnotations([pinLocation!], animated: false)
         
         if pointIsPersisted() {
+            
             // TODO Get the saved photos from Core Data
+            Model.shared.set(gallery: [])
+            collectionAlbum.reloadData()
+            enableControls(true)
             
         } else {
             
             // Start a request to get photos from Flickr
             fetchFhotos()
         }
+        
+        // TODO: Test!!!
+        Storage.shared.getAllPins()
+        
+//        Storage.shared.savePin(latitude: 20, longitude: 40)
+        Storage.shared.getPin(latitude: 20, longitude: 40)
+        
+//        Storage.shared.savePin(latitude: 3.1415, longitude: 0.12345)
+        Storage.shared.getPin(latitude: 3.1415, longitude: 0.12345)
+        
+        Storage.shared.getAllPins()
+        // TODO: Test!!!
     }
     
     @IBAction func onTapReload(_ sender: UIBarButtonItem) {
@@ -44,6 +60,9 @@ class PhotoAlbumVC: UIViewController {
         
         // To prevent user to interrupt the image content fetching process
         enableControls(false)
+        
+        // Scrolls to the top
+        collectionAlbum.setContentOffset(.zero, animated: true)
         
         RequestGetPhotos.get(location: pinLocation!.coordinate) { [weak self] result in
             
@@ -63,9 +82,6 @@ class PhotoAlbumVC: UIViewController {
             // Shows the fetched images in the collectionView
             self.collectionAlbum.reloadData()
             self.enableControls(true)
-            
-            // Scrolls to first cell
-            // self.collectionAlbum.scrollToItem(at: IndexPath(row: 0, section: 0), at: UICollectionViewScrollPosition.top, animated: true)
         }
     }
     
