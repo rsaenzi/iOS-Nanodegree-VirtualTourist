@@ -60,6 +60,10 @@ class PhotoAlbumVC: UIViewController {
         
         // TODO Clears the photoCount fot this pin location, to perform a full reset of the model
         
+        // Resets the model
+        Model.shared.resetGallery(photoCount: 0)
+        
+        // Start a request to get photos info from Flickr
         fetchPhotosInfoFromFlicker()
     }
     
@@ -186,7 +190,7 @@ extension PhotoAlbumVC: UICollectionViewDelegate {
         
         // TODO Deletes the image from Core Data
         
-        // TODO Change the photoCount value
+        // TODO Decrease the photoCount value in 1
     }
 }
 
