@@ -42,11 +42,14 @@ class PhotoAlbumVC: UIViewController {
         // TODO: Test!!!
         Storage.shared.getAllPins()
         
-//        Storage.shared.savePin(latitude: 20, longitude: 40)
+        Storage.shared.savePin(latitude: 20, longitude: 40)
         Storage.shared.getPin(latitude: 20, longitude: 40)
         
-//        Storage.shared.savePin(latitude: 3.1415, longitude: 0.12345)
+        Storage.shared.savePin(latitude: 3.1415, longitude: 0.12345)
         Storage.shared.getPin(latitude: 3.1415, longitude: 0.12345)
+        
+        Storage.shared.save(photo: #imageLiteral(resourceName: "Android"), index: 50, latitude: 3.1415, longitude: 0.12345)
+        Storage.shared.getPhotos(latitude: 3.1415, longitude: 0.12345)
         
         Storage.shared.getAllPins()
         // TODO: Test!!!

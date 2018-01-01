@@ -34,7 +34,7 @@ class Storage {
         }
     }
     
-    func getPin(latitude: Double, longitude: Double) -> StoredPin? {
+    func getPin(latitude: Float, longitude: Float) -> StoredPin? {
         
         // We get a valid context
         let context = getContext()
@@ -53,7 +53,6 @@ class Storage {
             
             if let first = results.first, let item = first as? StoredPin {
                 selectedPin = item
-                
                 print("Selection = latitude:\(item.latitude) longitude:\(item.longitude) photos:\(item.photos?.count)")
             }
             
@@ -63,14 +62,6 @@ class Storage {
 
         // Finally we return the fetched item
         return selectedPin
-    }
-    
-    func save(photo: UIImage, for pinIndex: Int) {
-        
-    }
-    
-    func getPhotos(for pinIndex: Int) -> [UIImage] {
-        return []
     }
     
     func getAllPins() -> [StoredPin] {
@@ -99,6 +90,66 @@ class Storage {
         
         // Finally we return the fetched items in the required format
         return allPins
+    }
+    
+    func save(photo: UIImage, index: Int, latitude: Float, longitude: Float) {
+        
+        // First we get a pin object
+        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+            print("Error when fetching the pin to store the image")
+            return
+        }
+        
+        // We get a valid context
+        let context = getContext()
+        
+        // Creates a new StoredPhoto inside the context
+        let newPhoto = StoredPhoto(context: context)
+        newPhoto.index = Int32(index)
+        newPhoto.image = UIImagePNGRepresentation(photo)
+        newPhoto.parentPin = pin
+        
+        // Adds the photo to pin
+        pin.addToPhotos(newPhoto)
+        
+        // Finally we save any change on the context
+        do {
+            if context.hasChanges {
+                try context.save()
+                print("Photo = index:\(index) longitude:\(longitude) latitude:\(latitude) image:\(photo)")
+            }
+        } catch {
+            print("Error when saving a new StoredPin object")
+        }
+    }
+    
+    func getPhotos(latitude: Float, longitude: Float) -> [UIImage] {
+        
+        // First we get a pin object
+        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+            print("Error when fetching the pin to get all its images")
+            return []
+        }
+        
+        guard let photos = pin.photos else {
+            print("Error when converting unwrapping photos property")
+            return []
+        }
+        
+        var images = [UIImage]()
+        for item in photos {
+            
+            guard let storedPhoto = item as? StoredPhoto,
+                  let photoData = storedPhoto.image,
+                  let validImage = UIImage(data: photoData) else {
+                    
+                print("Error when converting photos property format from Set to StoredPhoto")
+                break
+            }
+            images.append(validImage)
+        }
+        
+        return images
     }
     
     private func getContext() -> NSManagedObjectContext {
