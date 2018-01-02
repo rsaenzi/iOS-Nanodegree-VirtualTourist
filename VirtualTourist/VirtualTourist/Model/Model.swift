@@ -36,12 +36,6 @@ class Model {
         if galleryImages.count == 0 {
             galleryImages = [UIImage?](repeating: nil, count: galleryInfo.count)
         }
-        
-//        // TODO validate if galleryInfo.count == galleryImages.info is true
-//        // If dont means that the new request gave a different image count
-//        if self.galleryInfo.count != galleryImages.count {
-//            print("Error: galleryInfo.count is not equal than galleryImages.info!!!!")
-//        }
     }
     
     // Load persisted images from Core Data

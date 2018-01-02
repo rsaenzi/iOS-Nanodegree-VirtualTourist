@@ -56,9 +56,10 @@ class PhotoAlbumVC: UIViewController {
     
     @IBAction func onTapReload(_ sender: UIBarButtonItem) {
         
-        // TODO Deletes all persistent images for this pin location
-        
-        // TODO Clears the photoCount fot this pin location, to perform a full reset of the model
+        // Deletes all persistent images for this pin location
+        Storage.shared.deleteAllPhotos(
+            latitude: Float(pinLocation!.coordinate.latitude),
+            longitude: Float(pinLocation!.coordinate.longitude))
         
         // Resets the model
         Model.shared.resetGallery(photoCount: 0)
@@ -188,9 +189,11 @@ extension PhotoAlbumVC: UICollectionViewDelegate {
         // Deletes the image from the collection view
         collectionView.deleteItems(at: [indexPath])
         
-        // TODO Deletes the image from Core Data
-        
-        // TODO Decrease the photoCount value in 1
+        // Deletes the image from Core Data
+        Storage.shared.deletePhoto(
+            latitude: Float(self.pinLocation!.coordinate.latitude),
+            longitude: Float(self.pinLocation!.coordinate.longitude),
+            index: indexPath.row)
     }
 }
 

@@ -86,7 +86,7 @@ extension Storage {
         // Finally we save any change on the context
         let status = saveChanges()
         if status {
-            print("savePin() latitude:\(newPin.latitude) longitude:\(newPin.longitude) photos:\(newPin.photos?.count)")
+            print("savePin() latitude:\(newPin.latitude) longitude:\(newPin.longitude) photos:\(String(describing: newPin.photos?.count))")
         } else {
             print("savePin() Error when saving a new StoredPin object")
         }
@@ -111,7 +111,7 @@ extension Storage {
             
             if let first = results.first, let item = first as? StoredPin {
                 selectedPin = item
-                print("getPin() latitude:\(item.latitude) longitude:\(item.longitude) photos:\(item.photos?.count)")
+                print("getPin() latitude:\(item.latitude) longitude:\(item.longitude) photos:\(String(describing: item.photos?.count))")
             }
         } catch {
             print("getPin() Error when fetching a specific StoredPin object")
@@ -137,7 +137,7 @@ extension Storage {
             allPins = try context.fetch(fetchRequest)
             
             for item in allPins {
-                print("getAllPins() latitude:\(item.latitude) longitude:\(item.longitude) photos:\(item.photos?.count)")
+                print("getAllPins() latitude:\(item.latitude) longitude:\(item.longitude) photos:\(String(describing: item.photos?.count))")
             }
         } catch {
             print("getAllPins() Error when fetching all StoredPin objects")
@@ -165,9 +165,9 @@ extension Storage {
         // Finally we save any change on the context
         let status = saveChanges()
         if status {
-            print("setPhotoCount() longitude:\(longitude) latitude:\(latitude) photoCount:\(photoCount)")
+            print("setPhotoCount() longitude:\(longitude) latitude:\(latitude) photos:\(String(describing: pin.photos?.count))")
         } else {
-            print("setPhotoCount() Error when saving a new StoredPin object")
+            print("setPhotoCount() Error when saving a new photoCount value for a pin object")
         }
     }
     
@@ -175,7 +175,7 @@ extension Storage {
         
         // First we get a pin object
         guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
-            print("setPhotoCount() Error when fetching the pin to set its Photo Count")
+            print("getPhotoCount() Error when fetching the photoCount value of a pin object")
             return nil
         }
         
@@ -190,7 +190,7 @@ extension Storage {
         
         // First we get a pin object
         guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
-            print("savePhoto() Error when fetching the pin to store the image")
+            print("save(photo) Error when fetching the pin to store the photo")
             return
         }
         
@@ -209,9 +209,38 @@ extension Storage {
         // Finally we save any change on the context
         let status = saveChanges()
         if status {
-            print("savePhoto() index:\(index) longitude:\(longitude) latitude:\(latitude) image:\(photo)")
+            print("save(photo) index:\(index) longitude:\(longitude) latitude:\(latitude) photos:\(String(describing: pin.photos?.count))")
         } else {
-            print("savePhoto() Error when saving a new StoredPin object")
+            print("save(photo) Error when saving a new photo object on a pin")
+        }
+    }
+    
+    func deletePhoto(latitude: Float, longitude: Float, index indexToDelete: Int) {
+        
+        // First we get a pin object
+        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+            print("deletePhoto() Error when fetching the pin to store the image")
+            return
+        }
+        
+        // If pin has photos to delete
+        if let photoSet = pin.photos, let pinPhotos = photoSet as? Set<StoredPhoto> {
+        
+            // Find the photo to delete
+            let itemToDelete = pinPhotos.filter({ itemToCheck -> Bool in
+                return itemToCheck.index == indexToDelete
+            })
+            
+            // Remove the photo
+            pin.removeFromPhotos(itemToDelete as NSSet)
+        }
+        
+        // Finally we save any change on the context
+        let status = saveChanges()
+        if status {
+            print("deletePhoto() index:\(indexToDelete) longitude:\(longitude) latitude:\(latitude) photos:\(String(describing: pin.photos?.count))")
+        } else {
+            print("deletePhoto() Error when saving trying to delete a photo from a pin object")
         }
     }
     
@@ -239,5 +268,28 @@ extension Storage {
         }
         
         return images
+    }
+    
+    func deleteAllPhotos(latitude: Float, longitude: Float) {
+        
+        // First we get a pin object
+        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+            print("deleteAllPhotos() Error when fetching the pin to delete all its images")
+            return
+        }
+        
+        // Remove all photos
+        if let allPhotos = pin.photos {
+            pin.removeFromPhotos(allPhotos)
+        }
+        pin.photos = nil
+        
+        // Finally we save any change on the context
+        let status = saveChanges()
+        if status {
+            print("deleteAllPhotos() longitude:\(longitude) latitude:\(latitude) photos:\(String(describing: pin.photos?.count))")
+        } else {
+            print("deleteAllPhotos() Error when trying to delete all photos from a pin object")
+        }
     }
 }
