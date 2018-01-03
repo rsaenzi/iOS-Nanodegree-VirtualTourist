@@ -17,7 +17,7 @@ class PhotoAlbumVC: UIViewController {
     @IBOutlet private weak var buttonClose: UIBarButtonItem!
     @IBOutlet private weak var waitingAlert: UIView!
     
-    fileprivate let cellSize = UIScreen.main.bounds.width / 2
+    fileprivate let cellSize = UIScreen.main.bounds.width / 3
     var pinLocation: MKPointAnnotation?
     
     override func viewDidLoad() {
@@ -73,10 +73,16 @@ class PhotoAlbumVC: UIViewController {
         // To prevent user to interrupt the image content fetching process
         enableControls(false)
         
+        // Get a random page of images to fetch
+        let imagesPerPage = 20
+        let totalImages = 4000
+        let totalPages: Int = totalImages / imagesPerPage
+        let randomPage: Int = Int(arc4random_uniform(UInt32(totalPages)))
+        
         // Scrolls to the top
         collectionAlbum.setContentOffset(.zero, animated: true)
         
-        RequestGetPhotos.get(location: pinLocation!.coordinate) { [weak self] result in
+        RequestGetPhotos.get(location: pinLocation!.coordinate, page: randomPage, perPage: imagesPerPage) { [weak self] result in
             guard let `self` = self else { return }
             
             switch result {

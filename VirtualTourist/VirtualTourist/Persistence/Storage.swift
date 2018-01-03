@@ -233,6 +233,12 @@ extension Storage {
             
             // Remove the photo
             pin.removeFromPhotos(itemToDelete as NSSet)
+            
+            // Deletion is also done using the context
+            let context = getContext()
+            for item in itemToDelete {
+                context.delete(item)
+            }
         }
         
         // Finally we save any change on the context
@@ -278,9 +284,17 @@ extension Storage {
             return
         }
         
-        // Remove all photos
+        // We get a valid context
+        let context = getContext()
+        
+        // Remove all photos from pin object
         if let allPhotos = pin.photos {
             pin.removeFromPhotos(allPhotos)
+            
+            // Deletion is also done using the context
+            for item in allPhotos {
+                context.delete(item as! StoredPhoto)
+            }
         }
         pin.photos = nil
         
