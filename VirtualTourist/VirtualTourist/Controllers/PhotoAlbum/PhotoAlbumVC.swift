@@ -21,33 +21,32 @@ class PhotoAlbumVC: UIViewController {
     var pinLocation: MKPointAnnotation?
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
         // Add the selected pin to the map
         map.addAnnotation(pinLocation!)
         map.showAnnotations([pinLocation!], animated: false)
         
+        // Resets the model
+        Model.shared.resetGallery()
+        collectionAlbum.reloadData()
+        
+        // To prevent user to interrupt the image content fetching process
+        enableControls(false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         // Ask core data if we have a photo count associated to this pin,
         // which means that this pin was tapped previously
-        if let count = Storage.shared.getPhotoCount(
-            latitude: Float(pinLocation!.coordinate.latitude),
-            longitude: Float(pinLocation!.coordinate.longitude)), count > 0 {
-            
-            // Previous fetch, possible persisted images
-            Model.shared.resetGallery(photoCount: count)
+        if let count = Storage.shared.getPhotoCount(at: pinLocation!), count > 0 {
             
             // Fetch any saved photos from Core Data
-            let persistedPhotos = Storage.shared.getPhotos(
-                latitude: Float(pinLocation!.coordinate.latitude),
-                longitude: Float(pinLocation!.coordinate.longitude))
+            let persistedPhotos = Storage.shared.getPhotos(at: pinLocation!)
             
             // Load the persisted images into the model
-            Model.shared.load(persistedGalleryImages: persistedPhotos)
-            collectionAlbum.reloadData()
-
-        } else {
-            
-            // This is the first time we ask Flickr photos for this pinLocation
-            Model.shared.resetGallery(photoCount: 0)
+            Model.shared.load(persistedPhotos: persistedPhotos, totalPhotoCount: count)
         }
         
         // Start a request to get photos info from Flickr
@@ -57,12 +56,11 @@ class PhotoAlbumVC: UIViewController {
     @IBAction func onTapReload(_ sender: UIBarButtonItem) {
         
         // Deletes all persistent images for this pin location
-        Storage.shared.deleteAllPhotos(
-            latitude: Float(pinLocation!.coordinate.latitude),
-            longitude: Float(pinLocation!.coordinate.longitude))
+        Storage.shared.deleteAllPhotos(at: pinLocation!)
         
         // Resets the model
-        Model.shared.resetGallery(photoCount: 0)
+        Model.shared.resetGallery()
+        collectionAlbum.reloadData()
         
         // Start a request to get photos info from Flickr
         fetchPhotosInfoFromFlicker()
@@ -85,22 +83,18 @@ class PhotoAlbumVC: UIViewController {
         RequestGetPhotos.get(location: pinLocation!.coordinate, page: randomPage, perPage: imagesPerPage) { [weak self] result in
             guard let `self` = self else { return }
             
+            // Enable the controls again
+            self.enableControls(true)
+            
             switch result {
-                
             case .success(let studentResults):
                 
                 // Save the photo count for this pin location
-                Storage.shared.setPhotoCount(
-                    latitude: Float(self.pinLocation!.coordinate.latitude),
-                    longitude: Float(self.pinLocation!.coordinate.longitude),
-                    photoCount: studentResults.photos.photo.count)
+                Storage.shared.setPhotoCount(at: self.pinLocation!, photoCount: studentResults.photos.photo.count)
                 
                 // Save the photo info array into the model
-                Model.shared.load(galleryInfo: studentResults.photos.photo)
-                
-                // Shows the fetched images in the collectionView
+                Model.shared.load(fetchedPhotos: studentResults.photos.photo)
                 self.collectionAlbum.reloadData()
-                self.enableControls(true)
                 
             default:
                 break
@@ -173,9 +167,7 @@ extension PhotoAlbumVC {
             DispatchQueue.main.async {
                 
                 // Saves the images content to Core Data
-                Storage.shared.save(photo: imageContent, index: index,
-                                    latitude: Float(self.pinLocation!.coordinate.latitude),
-                                    longitude: Float(self.pinLocation!.coordinate.longitude))
+                Storage.shared.save(photo: imageContent, index: index, at: self.pinLocation!)
                 
                 cell.imagePhoto.image = imageContent
                 cell.loadingIndicator.isHidden = true
@@ -189,17 +181,14 @@ extension PhotoAlbumVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        // Deletes the image from Core Data
+        Storage.shared.deletePhoto(at: pinLocation!, index: indexPath.row)
+        
         // Deletes the image from the model
         Model.shared.deletePhoto(at: indexPath.row)
         
         // Deletes the image from the collection view
         collectionView.deleteItems(at: [indexPath])
-        
-        // Deletes the image from Core Data
-        Storage.shared.deletePhoto(
-            latitude: Float(self.pinLocation!.coordinate.latitude),
-            longitude: Float(self.pinLocation!.coordinate.longitude),
-            index: indexPath.row)
     }
 }
 

@@ -62,7 +62,7 @@ class TravelLocationsVC: UIViewController {
             map.addAnnotation(newPin)
             
             // Save the pin on Core Data
-            Storage.shared.savePin(latitude: Float(coords.latitude), longitude: Float(coords.longitude))
+            Storage.shared.savePin(at: newPin)
         }
     }
 }

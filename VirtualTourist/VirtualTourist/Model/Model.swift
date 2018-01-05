@@ -18,36 +18,33 @@ class Model {
     // Photo files for selected annotation point
     private var galleryImages = [UIImage?]()
     
-    func resetGallery(photoCount: Int) {
+    func resetGallery() {
         
-        // Clears any gallery info (fetched from flickr)
+        // Clears any gallery info
         galleryInfo = []
-        
-        // Inits an array of gallery images. If photoCount is greater that zero
-        // means that a previous request to flickr was made, and some images are stored in Core Data
-        galleryImages = [UIImage?](repeating: nil, count: photoCount)
+        galleryImages = []
     }
     
     // Load info fetched from flickr
-    func load(galleryInfo: [ApiPhoto]) {
-        self.galleryInfo = galleryInfo
-        
-        // If no previous request to Flickr was made...
-        if galleryImages.count == 0 {
-            galleryImages = [UIImage?](repeating: nil, count: galleryInfo.count)
-        }
+    func load(fetchedPhotos: [ApiPhoto]) {
+        galleryInfo = fetchedPhotos
     }
     
     // Load persisted images from Core Data
-    func load(persistedGalleryImages: [StoredPhoto]) {
+    func load(persistedPhotos: [StoredPhoto], totalPhotoCount: Int) {
+
+        let persistedImages = persistedPhotos.map({ storedPhoto -> (index: Int, icon: UIImage) in
+            let imageData = storedPhoto.image
+            let imageContent = UIImage(data: imageData!)
+            return (index: Int(storedPhoto.index), icon: imageContent!)
+        })
         
-        for persistedImage in persistedGalleryImages {
-            
-            guard let imageData = persistedImage.image,
-                  let imageContent = UIImage(data: imageData) else {
-                break
+        galleryImages = [UIImage?](repeating: nil, count: totalPhotoCount)
+        
+        for singleImage in persistedImages {
+            if singleImage.index < galleryImages.count {
+                galleryImages[singleImage.index] = singleImage.icon
             }
-            galleryImages[Int(persistedImage.index)] = imageContent
         }
     }
 }
@@ -63,15 +60,25 @@ extension Model {
     }
     
     func getPhotoImage(from index: Int) -> UIImage? {
-        return galleryImages[index]
+        if index < galleryImages.count {
+            return galleryImages[index]
+        } else {
+            return nil
+        }
     }
     
     func set(photoImage: UIImage, at index: Int) {
-        galleryImages[index] = photoImage
+        if index < galleryImages.count {
+            galleryImages[index] = photoImage
+        }
     }
     
     func deletePhoto(at index: Int) {
-        galleryInfo.remove(at: index)
-        galleryImages.remove(at: index)
+        if index < galleryInfo.count {
+            galleryInfo.remove(at: index)
+        }
+        if index < galleryImages.count {
+            galleryImages.remove(at: index)
+        }
     }
 }

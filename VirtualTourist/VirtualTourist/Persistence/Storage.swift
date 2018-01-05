@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 import CoreData
 
 class Storage {
@@ -73,7 +74,11 @@ class Storage {
 // MARK: Pins
 extension Storage {
     
-    func savePin(latitude: Float, longitude: Float) {
+    func savePin(at position: MKPointAnnotation) {
+        
+        // Gets the coordinates from the annotation point
+        let latitude: Float = Float(position.coordinate.latitude)
+        let longitude: Float = Float(position.coordinate.longitude)
         
         // We get a valid context
         let context = getContext()
@@ -92,7 +97,11 @@ extension Storage {
         }
     }
     
-    func getPin(latitude: Float, longitude: Float) -> StoredPin? {
+    func getPin(at position: MKPointAnnotation) -> StoredPin? {
+        
+        // Gets the coordinates from the annotation point
+        let latitude: Float = Float(position.coordinate.latitude)
+        let longitude: Float = Float(position.coordinate.longitude)
         
         // We get a valid context
         let context = getContext()
@@ -151,10 +160,14 @@ extension Storage {
 // MARK: Photo Count
 extension Storage {
     
-    func setPhotoCount(latitude: Float, longitude: Float, photoCount: Int) {
+    func setPhotoCount(at position: MKPointAnnotation, photoCount: Int) {
+        
+        // Gets the coordinates from the annotation point
+        let latitude: Float = Float(position.coordinate.latitude)
+        let longitude: Float = Float(position.coordinate.longitude)
         
         // First we get a pin object
-        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+        guard let pin = self.getPin(at: position) else {
             print("setPhotoCount() Error when fetching the pin to set its Photo Count")
             return
         }
@@ -171,10 +184,10 @@ extension Storage {
         }
     }
     
-    func getPhotoCount(latitude: Float, longitude: Float) -> Int? {
+    func getPhotoCount(at position: MKPointAnnotation) -> Int? {
         
         // First we get a pin object
-        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+        guard let pin = self.getPin(at: position) else {
             print("getPhotoCount() Error when fetching the photoCount value of a pin object")
             return nil
         }
@@ -186,10 +199,14 @@ extension Storage {
 // MARK: Photos
 extension Storage {
     
-    func save(photo: UIImage, index: Int, latitude: Float, longitude: Float) {
+    func save(photo: UIImage, index: Int, at position: MKPointAnnotation) {
+        
+        // Gets the coordinates from the annotation point
+        let latitude: Float = Float(position.coordinate.latitude)
+        let longitude: Float = Float(position.coordinate.longitude)
         
         // First we get a pin object
-        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+        guard let pin = self.getPin(at: position) else {
             print("save(photo) Error when fetching the pin to store the photo")
             return
         }
@@ -215,10 +232,14 @@ extension Storage {
         }
     }
     
-    func deletePhoto(latitude: Float, longitude: Float, index indexToDelete: Int) {
+    func deletePhoto(at position: MKPointAnnotation, index indexToDelete: Int) {
+        
+        // Gets the coordinates from the annotation point
+        let latitude: Float = Float(position.coordinate.latitude)
+        let longitude: Float = Float(position.coordinate.longitude)
         
         // First we get a pin object
-        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+        guard let pin = self.getPin(at: position) else {
             print("deletePhoto() Error when fetching the pin to store the image")
             return
         }
@@ -227,33 +248,35 @@ extension Storage {
         if let photoSet = pin.photos, let pinPhotos = photoSet as? Set<StoredPhoto> {
         
             // Find the photo to delete
-            let itemToDelete = pinPhotos.filter({ itemToCheck -> Bool in
+            let itemsToDelete = pinPhotos.filter({ itemToCheck -> Bool in
                 return itemToCheck.index == indexToDelete
             })
             
-            // Remove the photo
-            pin.removeFromPhotos(itemToDelete as NSSet)
+            print("deletePhoto() Items to delete:\(itemsToDelete.count)")
             
             // Deletion is also done using the context
             let context = getContext()
-            for item in itemToDelete {
+            for item in itemsToDelete {
                 context.delete(item)
             }
-        }
-        
-        // Finally we save any change on the context
-        let status = saveChanges()
-        if status {
-            print("deletePhoto() index:\(indexToDelete) longitude:\(longitude) latitude:\(latitude) photos:\(String(describing: pin.photos?.count))")
-        } else {
-            print("deletePhoto() Error when saving trying to delete a photo from a pin object")
+            
+            // Remove the photo
+            pin.removeFromPhotos(itemsToDelete as NSSet)
+            
+            // Finally we save any change on the context
+            let status = saveChanges()
+            if status {
+                print("deletePhoto() index:\(indexToDelete) longitude:\(longitude) latitude:\(latitude) photos:\(String(describing: pin.photos?.count))")
+            } else {
+                print("deletePhoto() Error when saving trying to delete a photo from a pin object")
+            }
         }
     }
     
-    func getPhotos(latitude: Float, longitude: Float) -> [StoredPhoto] {
+    func getPhotos(at position: MKPointAnnotation) -> [StoredPhoto] {
         
         // First we get a pin object
-        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+        guard let pin = self.getPin(at: position) else {
             print("getPhotos() Error when fetching the pin to get all its images")
             return []
         }
@@ -276,27 +299,32 @@ extension Storage {
         return images
     }
     
-    func deleteAllPhotos(latitude: Float, longitude: Float) {
+    func deleteAllPhotos(at position: MKPointAnnotation) {
+        
+        // Gets the coordinates from the annotation point
+        let latitude: Float = Float(position.coordinate.latitude)
+        let longitude: Float = Float(position.coordinate.longitude)
         
         // First we get a pin object
-        guard let pin = self.getPin(latitude: latitude, longitude: longitude) else {
+        guard let pin = self.getPin(at: position) else {
             print("deleteAllPhotos() Error when fetching the pin to delete all its images")
             return
         }
         
-        // We get a valid context
-        let context = getContext()
+        print("deletePhoto() Items to delete:\(String(describing: pin.photos?.count))")
         
-        // Remove all photos from pin object
         if let allPhotos = pin.photos {
-            pin.removeFromPhotos(allPhotos)
             
             // Deletion is also done using the context
+            let context = getContext()
             for item in allPhotos {
                 context.delete(item as! StoredPhoto)
             }
+        
+            // Remove all photos from pin object
+            pin.removeFromPhotos(allPhotos)
+            pin.photos = nil
         }
-        pin.photos = nil
         
         // Finally we save any change on the context
         let status = saveChanges()
