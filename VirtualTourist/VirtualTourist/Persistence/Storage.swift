@@ -232,11 +232,7 @@ extension Storage {
     }
     
     func deletePhoto(at position: MKPointAnnotation, index indexToDelete: Int) {
-        
-        // Gets the coordinates from the annotation point
-        let latitude: Float = Float(position.coordinate.latitude)
-        let longitude: Float = Float(position.coordinate.longitude)
-        
+
         // First we get a pin object
         guard let pin = self.getPin(at: position) else {
             print("deletePhoto() Error when fetching the pin to store the image")
@@ -251,8 +247,6 @@ extension Storage {
                 return itemToCheck.index == indexToDelete
             })
             
-            print("deletePhoto() Items to delete:\(itemsToDelete.count)")
-            
             // Deletion is also done using the context
             let context = getContext()
             for item in itemsToDelete {
@@ -262,13 +256,31 @@ extension Storage {
             // Remove the photo
             pin.removeFromPhotos(itemsToDelete as NSSet)
             
-            // Finally we save any change on the context
+            // We save any change on the context
             let status = saveChanges()
             if status {
-                print("deletePhoto() index:\(indexToDelete) longitude:\(longitude) latitude:\(latitude) photos:\(String(describing: pin.photos?.count))")
+                print("deletePhoto() index:\(indexToDelete) photos:\(String(describing: pin.photos?.count))")
             } else {
                 print("deletePhoto() Error when saving trying to delete a photo from a pin object")
             }
+
+            // Here we update the indexes on the remaining photos
+            let remainingPhotos = getPhotos(at: position)
+                .sorted(by: { (photo1, photo2) -> Bool in
+                    return photo1.index < photo2.index
+                })
+            
+            var cumulativeIndex: Int32 = 0
+            for item in remainingPhotos {
+                
+                if cumulativeIndex != item.index {
+                    item.index = cumulativeIndex
+                }
+                cumulativeIndex += 1
+            }
+            
+            // Finally we save any change on the context
+            saveChanges()
         }
     }
     
