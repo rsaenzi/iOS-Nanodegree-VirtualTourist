@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1068D7020015A0000780B06 /* DownloadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1068D6F20015A0000780B06 /* DownloadStatus.swift */; };
 		B18B983F1FF89A2E0056A161 /* ApiEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B983E1FF89A2E0056A161 /* ApiEndpoint.swift */; };
 		B18B98431FF8B57B0056A161 /* ResponseGetPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = B18B98421FF8B57B0056A161 /* ResponseGetPhotos.swift */; };
 		B18B98461FF8B7B10056A161 /* flickr.photos.search.json in Resources */ = {isa = PBXBuildFile; fileRef = B18B98451FF8B7B10056A161 /* flickr.photos.search.json */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B1068D6F20015A0000780B06 /* DownloadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadStatus.swift; sourceTree = "<group>"; };
 		B18B983E1FF89A2E0056A161 /* ApiEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEndpoint.swift; sourceTree = "<group>"; };
 		B18B98421FF8B57B0056A161 /* ResponseGetPhotos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseGetPhotos.swift; sourceTree = "<group>"; };
 		B18B98451FF8B7B10056A161 /* flickr.photos.search.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = flickr.photos.search.json; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				B1C5CAB81FF97EDC00FE3327 /* Model.swift */,
+				B1068D6F20015A0000780B06 /* DownloadStatus.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				B1C5CAB91FF97EDC00FE3327 /* Model.swift in Sources */,
 				B196B7501FF8882900F12012 /* UICollectionView+Load.swift in Sources */,
 				B18B984A1FF8B89A0056A161 /* RequestGetPhotos.swift in Sources */,
+				B1068D7020015A0000780B06 /* DownloadStatus.swift in Sources */,
 				B196B7521FF888D100F12012 /* UIViewController+Load.swift in Sources */,
 				B18B98481FF8B8780056A161 /* Request.swift in Sources */,
 				B196B74E1FF887A000F12012 /* PhotoAlbumCell.swift in Sources */,

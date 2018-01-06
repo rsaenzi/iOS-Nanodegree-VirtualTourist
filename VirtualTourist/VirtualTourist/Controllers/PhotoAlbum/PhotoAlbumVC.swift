@@ -106,7 +106,7 @@ class PhotoAlbumVC: UIViewController {
                 Storage.shared.setPhotoCount(at: self.pinLocation!, photoCount: studentResults.photos.photo.count)
                 
                 // Save the photo info array into the model
-                Model.shared.load(fetchedPhotos: studentResults.photos.photo)
+                Model.shared.load(fetchedInfo: studentResults.photos.photo)
                 self.collectionAlbum.reloadData()
                 
             default:
@@ -138,36 +138,58 @@ extension PhotoAlbumVC: UICollectionViewDataSource {
         let cell: PhotoAlbumCell = collectionView.dequeue(indexPath)
         
         // If the image was previously downloaded or fetched from Core Data...
-        if let imageContent = Model.shared.getPhotoImage(from: indexPath.row) { // Agregar downloadState aqui!!!!
-            cell.imagePhoto.image = imageContent
-            cell.loadingIndicator.isHidden = true
-            cell.loadingIndicator.stopAnimating()
+        if let imageContent = Model.shared.getPhotoImage(from: indexPath.row) {
+            switch imageContent.status {
+                
+            case .notDownloaded:
+                showWaiting(on: cell)
+                
+                // Starts downloading the image content
+                fetchImage(for: cell, at: indexPath.row)
+                
+            case .isDownloading:
+                showWaiting(on: cell)
+                
+            case .downloadFinished:
+                show(image: imageContent.image ?? UIImage(), on: cell)
+            }
             
         } else {
-            // While the image is being downloaded, we display an activity indicator
-            cell.imagePhoto.image = nil
-            cell.loadingIndicator.isHidden = false
-            cell.loadingIndicator.startAnimating()
-            
-            // Starts downloading the image content
-            let photoInfo = Model.shared.getPhotoInfo(from: indexPath.row)
-            fetchImage(from: photoInfo, for: cell, at: indexPath.row)
+            showWaiting(on: cell)
         }
         
         return cell
+    }
+    
+    private func show(image: UIImage, on cell: PhotoAlbumCell) {
+        cell.imagePhoto.image = image
+        cell.loadingIndicator.isHidden = true
+        cell.loadingIndicator.stopAnimating()
+    }
+    
+    private func showWaiting(on cell: PhotoAlbumCell) {
+        cell.imagePhoto.image = nil
+        cell.loadingIndicator.isHidden = false
+        cell.loadingIndicator.startAnimating()
     }
 }
 
 extension PhotoAlbumVC {
     
-    private func fetchImage(from photoInfo: ApiPhoto, for cell: PhotoAlbumCell, at index: Int) {
+    private func fetchImage(for cell: PhotoAlbumCell, at index: Int) {
+        
+        // Rise the flag that indicates this image is going to be downloaded
+        Model.shared.setIsDownloadingStatus(at: index)
+        
+        // Get the url to get the image
+        let photoURL = Model.shared.getPhotoInfo(from: index).url
         
         // In a background queue we fetch the image
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let `self` = self else { return }
             
             // Download the image file
-            guard let imageUrl = URL(string: photoInfo.url),
+            guard let imageUrl = URL(string: photoURL),
                   let imageData = try? Data(contentsOf: imageUrl),
                   let imageContent = UIImage(data: imageData) else {
                 return
@@ -181,10 +203,9 @@ extension PhotoAlbumVC {
                 
                 // Saves the image file in the model
                 Model.shared.save(photoImage: imageContent, at: index)
-                
-                cell.imagePhoto.image = imageContent
-                cell.loadingIndicator.isHidden = true
-                cell.loadingIndicator.stopAnimating()
+
+                // Updates the cell
+                self.show(image: imageContent, on: cell)
             }
         }
     }

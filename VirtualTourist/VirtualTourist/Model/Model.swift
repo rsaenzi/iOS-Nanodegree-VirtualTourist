@@ -8,8 +8,7 @@
 
 import UIKit
 
-//typealias <#type name#> = <#type expression#>
-// agregar a galleryInfo un downloadStatus
+typealias GalleryItem = (image: UIImage?, status: DownloadStatus)
 
 class Model {
     
@@ -19,7 +18,7 @@ class Model {
     private var galleryInfo = [ApiPhoto]()
     
     // Photo files for selected annotation point
-    private var galleryImages = [UIImage?]()
+    private var galleryImages = [GalleryItem]()
     
     // Indicates if this is the first time this pin is tapped
     var pinHasStoredPhotos = false
@@ -30,14 +29,14 @@ class Model {
 extension Model {
     
     // Load info fetched from flickr
-    func load(fetchedPhotos: [ApiPhoto]) {
-        galleryInfo = fetchedPhotos
-        galleryImages = [UIImage?](repeating: nil, count: galleryInfo.count)
+    func load(fetchedInfo: [ApiPhoto]) {
+        galleryInfo = fetchedInfo
+        galleryImages = [GalleryItem](repeating: GalleryItem(image: nil, status: .notDownloaded), count: galleryInfo.count)
     }
     
     func save(photoImage: UIImage, at index: Int) {
         if index < galleryImages.count {
-            galleryImages[index] = photoImage
+            galleryImages[index] = GalleryItem(image: photoImage, status: .downloadFinished)
         }
     }
     
@@ -46,6 +45,12 @@ extension Model {
             return galleryInfo[index]
         } else {
             fatalError("This should not happen")
+        }
+    }
+    
+    func setIsDownloadingStatus(at index: Int) {
+        if index < galleryImages.count {
+            galleryImages[index].status = DownloadStatus.isDownloading
         }
     }
 }
@@ -64,16 +69,17 @@ extension Model {
             return (index: Int(storedPhoto.index), icon: imageContent!)
         })
         
-        // In this case, photo info is not required because the images are not going to be downloaded
-        // Unless the user taps refresh button
+        // In this case, photo info is not required because
+        // the images are not going to be downloaded, unless the user taps refresh button
         galleryInfo = []
         
         // Initialize the arrays
-        galleryImages = [UIImage?](repeating: nil, count: totalPhotoCount)
+        galleryImages = [GalleryItem](repeating: GalleryItem(image: nil, status: .notDownloaded), count: persistedPhotos.count)
         
-        for singleImage in persistedImages { // TODO this keeps in the same order than when they were downloaded
+        // This keeps in the same order than when they were downloaded
+        for singleImage in persistedImages {
             if singleImage.index < galleryImages.count {
-                galleryImages[singleImage.index] = singleImage.icon
+                galleryImages[singleImage.index] = GalleryItem(image: singleImage.icon, status: .downloadFinished)
             }
         }
     }
@@ -86,7 +92,7 @@ extension Model {
         return galleryImages.count
     }
     
-    func getPhotoImage(from index: Int) -> UIImage? {
+    func getPhotoImage(from index: Int) -> GalleryItem? {
         if index < galleryImages.count {
             return galleryImages[index]
         } else {
