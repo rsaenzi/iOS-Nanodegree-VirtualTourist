@@ -23,6 +23,9 @@ class PhotoAlbumVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // To prevent user to interrupt the image content fetching process
+        enableControls(false)
+        
         // Add the selected pin to the map
         map.addAnnotation(pinLocation!)
         map.showAnnotations([pinLocation!], animated: false)
@@ -30,9 +33,6 @@ class PhotoAlbumVC: UIViewController {
         // Resets the model
         Model.shared.resetGallery()
         collectionAlbum.reloadData()
-        
-        // To prevent user to interrupt the image content fetching process
-        enableControls(false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,18 +42,31 @@ class PhotoAlbumVC: UIViewController {
         // which means that this pin was tapped previously
         if let count = Storage.shared.getPhotoCount(at: pinLocation!), count > 0 {
             
+            // Set the right flag on the model
+            Model.shared.pinHasStoredPhotos = true
+            
             // Fetch any saved photos from Core Data
             let persistedPhotos = Storage.shared.getPhotos(at: pinLocation!)
             
             // Load the persisted images into the model
             Model.shared.load(persistedPhotos: persistedPhotos, totalPhotoCount: count)
-        }
+            collectionAlbum.reloadData()
+            enableControls(true)
+            
+        } else {
+            
+            // Set the right flag on the model
+            Model.shared.pinHasStoredPhotos = false
         
-        // Start a request to get photos info from Flickr
-        fetchPhotosInfoFromFlicker()
+            // Start a request to get photos info from Flickr
+            fetchPhotosInfoFromFlicker()
+        }
     }
     
     @IBAction func onTapReload(_ sender: UIBarButtonItem) {
+        
+        // Set the right flag on the model
+        Model.shared.pinHasStoredPhotos = false
         
         // Deletes all persistent images for this pin location
         Storage.shared.deleteAllPhotos(at: pinLocation!)
@@ -125,7 +138,7 @@ extension PhotoAlbumVC: UICollectionViewDataSource {
         let cell: PhotoAlbumCell = collectionView.dequeue(indexPath)
         
         // If the image was previously downloaded or fetched from Core Data...
-        if let imageContent = Model.shared.getPhotoImage(from: indexPath.row) {
+        if let imageContent = Model.shared.getPhotoImage(from: indexPath.row) { // Agregar downloadState aqui!!!!
             cell.imagePhoto.image = imageContent
             cell.loadingIndicator.isHidden = true
             cell.loadingIndicator.stopAnimating()
@@ -160,14 +173,14 @@ extension PhotoAlbumVC {
                 return
             }
             
-            // Saves the image file in the model
-            Model.shared.set(photoImage: imageContent, at: index)
-            
             // When the download completes, we load the image in the main queue
             DispatchQueue.main.async {
                 
                 // Saves the images content to Core Data
                 Storage.shared.save(photo: imageContent, index: index, at: self.pinLocation!)
+                
+                // Saves the image file in the model
+                Model.shared.save(photoImage: imageContent, at: index)
                 
                 cell.imagePhoto.image = imageContent
                 cell.loadingIndicator.isHidden = true

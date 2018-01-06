@@ -120,7 +120,6 @@ extension Storage {
             
             if let first = results.first, let item = first as? StoredPin {
                 selectedPin = item
-                print("getPin() latitude:\(item.latitude) longitude:\(item.longitude) photos:\(String(describing: item.photos?.count))")
             }
         } catch {
             print("getPin() Error when fetching a specific StoredPin object")
