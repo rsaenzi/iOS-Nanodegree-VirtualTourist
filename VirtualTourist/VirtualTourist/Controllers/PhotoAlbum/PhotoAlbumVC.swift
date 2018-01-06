@@ -49,7 +49,7 @@ class PhotoAlbumVC: UIViewController {
             let persistedPhotos = Storage.shared.getPhotos(at: pinLocation!)
             
             // Load the persisted images into the model
-            Model.shared.load(persistedPhotos: persistedPhotos, totalPhotoCount: count)
+            Model.shared.load(persistedPhotos: persistedPhotos)
             collectionAlbum.reloadData()
             enableControls(true)
             

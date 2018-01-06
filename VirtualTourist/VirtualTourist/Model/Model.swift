@@ -50,7 +50,7 @@ extension Model {
     
     func setIsDownloadingStatus(at index: Int) {
         if index < galleryImages.count {
-            galleryImages[index].status = DownloadStatus.isDownloading
+            galleryImages[index].status = .isDownloading
         }
     }
 }
@@ -60,28 +60,27 @@ extension Model {
 extension Model {
     
     // Load persisted images from Core Data
-    func load(persistedPhotos: [StoredPhoto], totalPhotoCount: Int) {
+    func load(persistedPhotos: [StoredPhoto]) {
         
         // Transform the storable model into the format required by this class
         let persistedImages = persistedPhotos.map({ storedPhoto -> (index: Int, icon: UIImage) in
             let imageData = storedPhoto.image
             let imageContent = UIImage(data: imageData!)
             return (index: Int(storedPhoto.index), icon: imageContent!)
-        })
+          
+        // This keeps in the same order than when they were downloaded
+        }).sorted { first, second -> Bool in
+            return first.index < second.index
+        }
         
         // In this case, photo info is not required because
         // the images are not going to be downloaded, unless the user taps refresh button
         galleryInfo = []
         
         // Initialize the arrays
-        galleryImages = [GalleryItem](repeating: GalleryItem(image: nil, status: .notDownloaded), count: persistedPhotos.count)
-        
-        // This keeps in the same order than when they were downloaded
-        for singleImage in persistedImages {
-            if singleImage.index < galleryImages.count {
-                galleryImages[singleImage.index] = GalleryItem(image: singleImage.icon, status: .downloadFinished)
-            }
-        }
+        galleryImages = persistedImages.map({ (index, icon) -> GalleryItem in
+            return GalleryItem(image: icon, status: DownloadStatus.downloadFinished)
+        })
     }
 }
 
